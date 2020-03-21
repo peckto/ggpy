@@ -29,7 +29,7 @@ class geom_point(geom):
     Examples
     --------
     """
-    DEFAULT_AES = {'alpha': 1, 'color': 'black', 'shape': 'o', 'size': 20, 'edgecolors': 'none'}
+    DEFAULT_AES = {'alpha': 1, 'color': 'black', 'shape': 'o', 'size': 20, 'edgecolors': 'none', 'picker': False}
     REQUIRED_AES = {'x', 'y'}
     _aes_renames = {'size': 's', 'shape': 'marker', 'color': 'c'}
     DEFAULT_PARAMS = {'position': None}
