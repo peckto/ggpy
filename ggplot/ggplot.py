@@ -206,7 +206,7 @@ class ggplot(object):
                 self._aes.data['y'] = x
 
         if self.margins:
-            plt.subplots_adjust(**self.margins)
+            self.plt.subplots_adjust(**self.margins)
 
     def apply_axis_labels(self):
         if self.xlab:
@@ -441,7 +441,12 @@ class ggplot(object):
         if self.coords=="polar":
             facet_params['subplot_kw'] = { "polar": True }
 
-        fig, axs = plt.subplots(**facet_params)
+        axs = []
+        for _ in range(ncol*nrow):
+            axs.append(self.fig.add_subplot(ncol*nrow, 1, _+1))
+        axs = np.array(axs)
+
+        fig = self.fig
         return fig, axs
 
     def get_subplot(self, row, col):
@@ -611,7 +616,6 @@ class ggplot(object):
 
     def make(self):
         "Constructs the plot using the methods. This is the 'main' for ggplot"
-        plt.close()
         with mpl.rc_context():
             self.apply_theme()
 
@@ -621,7 +625,11 @@ class ggplot(object):
                 subplot_kw = {}
                 if self.coords=="polar":
                     subplot_kw = { "polar": True }
-                self.fig, self.subplots = plt.subplots(subplot_kw=subplot_kw)
+                if hasattr(self, 'fig'):
+                    self.subplots = self.fig.add_subplot(111)
+                else:
+                    self.fig, self.subplots = plt.subplots(subplot_kw=subplot_kw)
+
 
             self.apply_scales()
 
